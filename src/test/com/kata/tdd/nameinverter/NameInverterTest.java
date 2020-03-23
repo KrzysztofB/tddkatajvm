@@ -26,4 +26,10 @@ class NameInverterTest {
         String result = nameInverter.invert("");
         assertEquals("", result);
     }
+
+    @Test
+    void shouldReturnEmptyStringForWhiteSpaceText(){
+        String result = nameInverter.invert("\t \n ");
+        assertEquals("", result);
+    }
 }
