@@ -17,8 +17,20 @@ public class Bowling {
 
     public int getScore(){
         int score = 0;
+        int pinsInFrame=0;
+        int rollInFrame = 0;
+        int prevFrameScore = 0;
         for(int pins : rolls){
             score += pins;
+            if(rollInFrame==0){
+                if(prevFrameScore==10){
+                    score += 10;
+                }
+                prevFrameScore = 0;
+            }
+            rollInFrame++;
+            rollInFrame%=2;
+            prevFrameScore += pins;
         }
         return score;
     }
