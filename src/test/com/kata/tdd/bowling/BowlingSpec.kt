@@ -7,8 +7,6 @@ class BowlingSpec : BehaviorSpec({
 
     Given("a bowling game") {
 
-        //lateinit var game: Bowling
-
         When("not all pins are down in each frame") {
             val game = Bowling()
             repeat(20, { game.roll(4) })
@@ -19,21 +17,30 @@ class BowlingSpec : BehaviorSpec({
 
         When("the player throws after a 'spare'") {
             val game = Bowling()
+            game.roll(6)
+            game.roll(4)
+            game.roll(8)
             game.roll(1)
-            game.roll(9)
-            game.roll(7)
-            Then("score is incremented by 10") {
-                game.getScore().shouldBe(1 + 9 + 10 + 7)
+            Then("score is incremented next roll") {
+                game.getScore().shouldBe(10 + 8 + 8 +1)
             }
         }
 
         When("the player throws after a 'strike'") {
             val game = Bowling()
             game.roll(10)
-            game.roll(3)
-            game.roll(4)
+            game.roll(7)
+            game.roll(1)
             Then("score is incremented by 10 in two rolls") {
-                game.getScore().shouldBe(10 + 13 + 14)
+                game.getScore().shouldBe(18 + 8)
+            }
+        }
+
+        When("the player rolls strike 10 times and 2 extra"){
+            val game = Bowling()
+            repeat(12, { game.roll(10) })
+            Then("score is 300") {
+                game.getScore().shouldBe(300)
             }
         }
     }

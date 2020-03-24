@@ -22,15 +22,21 @@ public class Bowling {
 
     public int getScore() {
         int score = 0;
-        Frame previous = new Frame(0);
+        Frame last1 = new Frame(0);
+        Frame last2 = new Frame(0);
         for (Frame frame : frames) {
-            if (previous.isSpare()) {
-                score += 10;
-            } else if (previous.isStrike()) {
-                score += 20;
+            if (last1.isSpare()) {
+                score += frame.firstRoll;
+            } else if (last1.isStrike()) {
+                score += frame.getScore();
+                if(last2.isStrike()){
+                    score += frame.firstRoll;
+                }
             }
             score += frame.getScore();
-            previous = frame;
+            last2 = last1;
+            last1 = frame;
+
         }
         return score;
     }
@@ -57,7 +63,9 @@ public class Bowling {
         boolean isSpare() {
             return getScore() == 10 && secondRoll > 0;
         }
-
+        int numThrows(){
+            return isStrike()? 1 : 2;
+        }
         void roll(int pinsDown) {
             finished = true;
             secondRoll = pinsDown;
