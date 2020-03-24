@@ -9,4 +9,5 @@ http://codingdojo.org/kata/Bowling/
 - if not all pins in fram are down, total is sum of pins in each frame
 - if in second roll in frame rest of pins is down
 it's called "spare" and 10 is added to next roll
-
+- if first roll in frame knocks down all pins, its the end of  frame
+ and 10 is added to two next rolls

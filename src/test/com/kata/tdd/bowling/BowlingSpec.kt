@@ -1,7 +1,7 @@
 package com.kata.tdd.bowling
 
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.BehaviorSpec
+import io.kotest.core.spec.style.BehaviorSpec
+import io.kotest.matchers.shouldBe
 
 class BowlingSpec : BehaviorSpec({
 
@@ -17,13 +17,23 @@ class BowlingSpec : BehaviorSpec({
             }
         }
 
-        When("the player throws after a 'spare'"){
+        When("the player throws after a 'spare'") {
             val game = Bowling()
             game.roll(1)
             game.roll(9)
             game.roll(7)
-            Then("score is incremented by 10"){
+            Then("score is incremented by 10") {
                 game.getScore().shouldBe(1 + 9 + 10 + 7)
+            }
+        }
+
+        When("the player throws after a 'strike'") {
+            val game = Bowling()
+            game.roll(10)
+            game.roll(3)
+            game.roll(4)
+            Then("score is incremented by 10 in two rolls") {
+                game.getScore().shouldBe(10 + 13 + 14)
             }
         }
     }
