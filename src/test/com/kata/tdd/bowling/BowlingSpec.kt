@@ -15,23 +15,23 @@ class BowlingSpec : BehaviorSpec({
             }
         }
 
-        When("the player throws after a 'spare'") {
+        When("the player throws a 'spare'") {
             val game = Bowling()
             game.roll(6)
             game.roll(4)
             game.roll(8)
             game.roll(1)
-            Then("score is incremented next roll") {
+            Then("score is incremented by next ball") {
                 game.getScore().shouldBe(10 + 8 + 8 +1)
             }
         }
 
-        When("the player throws after a 'strike'") {
+        When("the player throws a 'strike'") {
             val game = Bowling()
             game.roll(10)
             game.roll(7)
             game.roll(1)
-            Then("score is incremented by 10 in two rolls") {
+            Then("score is incremented by next two balls") {
                 game.getScore().shouldBe(18 + 8)
             }
         }

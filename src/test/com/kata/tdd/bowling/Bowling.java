@@ -1,6 +1,8 @@
 package com.kata.tdd.bowling;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Bowling {
     private LinkedList<Frame> frames;
@@ -20,24 +22,37 @@ public class Bowling {
         }
     }
 
-    public int getScore() {
-        int score = 0;
-        Frame last1 = new Frame(0);
-        Frame last2 = new Frame(0);
-        for (Frame frame : frames) {
-            if (last1.isSpare()) {
-                score += frame.firstRoll;
-            } else if (last1.isStrike()) {
-                score += frame.getScore();
-                if(last2.isStrike()){
-                    score += frame.firstRoll;
-                }
-            }
-            score += frame.getScore();
-            last2 = last1;
-            last1 = frame;
+    private int firstBallAfterFrame(int frameIndex, List<Frame> frames) {
+        Frame frame = frames.get(frameIndex + 1);
+        return frame.firstRoll;
+    }
 
+    private int secondBallAfterFrame(int frameIndex, List<Frame> frames) {
+        Frame frame = frames.get(frameIndex + 1);
+        if (frame.isStrike()) {
+            frame = frames.get(frameIndex + 2);
+            return frame.firstRoll;
         }
+        return frame.secondRoll;
+    }
+
+    public int getScore() {
+        List<Frame> tempFrames = new ArrayList<>(frames);
+        Frame empty = new Frame(0);
+        while (tempFrames.size() < 12) tempFrames.add(empty);
+
+        int score = 0;
+        for (int frameIndex = 0; frameIndex < 10; frameIndex++) {
+            Frame frame = tempFrames.get(frameIndex);
+            score += frame.getScore();
+            if (frame.isSpare()) {
+                score += firstBallAfterFrame(frameIndex, tempFrames);
+            } else if (frame.isStrike()) {
+                score += firstBallAfterFrame(frameIndex, tempFrames);
+                score += secondBallAfterFrame(frameIndex, tempFrames);
+            }
+        }
+
         return score;
     }
 
@@ -63,9 +78,11 @@ public class Bowling {
         boolean isSpare() {
             return getScore() == 10 && secondRoll > 0;
         }
-        int numThrows(){
-            return isStrike()? 1 : 2;
+
+        int numThrows() {
+            return isStrike() ? 1 : 2;
         }
+
         void roll(int pinsDown) {
             finished = true;
             secondRoll = pinsDown;
