@@ -22,7 +22,7 @@ class BowlingSpec : BehaviorSpec({
             game.roll(8)
             game.roll(1)
             Then("score is incremented by next ball") {
-                game.getScore().shouldBe(10 + 8 + 8 +1)
+                game.getScore().shouldBe(10 + 8 + 8 + 1)
             }
         }
 
@@ -36,11 +36,27 @@ class BowlingSpec : BehaviorSpec({
             }
         }
 
-        When("the player rolls strike 10 times and 2 extra"){
+        When("the player rolls strike 10 times and 2 extra") {
             val game = Bowling()
             repeat(12, { game.roll(10) })
             Then("score is 300") {
                 game.getScore().shouldBe(300)
+            }
+        }
+
+        When("the player rolls 10 times 9 and 0") {
+            val game = Bowling()
+            repeat(12, { game.roll(9); game.roll(0) })
+            Then("score is 90") {
+                game.getScore().shouldBe(90)
+            }
+        }
+
+        When("the player rolls 5, 21 times") {
+            val game = Bowling()
+            repeat(21, { game.roll(5) })
+            Then("score is 150") {
+                game.getScore().shouldBe(150)
             }
         }
     }
